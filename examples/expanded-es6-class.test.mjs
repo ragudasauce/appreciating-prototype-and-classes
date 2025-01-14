@@ -43,12 +43,22 @@ describe('A Shape', () => {
 		});
 		test('should change the x and y properties', () => {
 			const shape = new Shape();
+
+			shape.move();
+			expect(shape.x).toBe(0);
+			expect(shape.y).toBe(0);
+
 			shape.move(3);
 			expect(shape.x).toBe(3);
 			expect(shape.y).toBe(0);
+			
 			shape.move(3, 6);
 			expect(shape.x).toBe(6);
 			expect(shape.y).toBe(6);
+		});
+		test('should retrieve the standardInch', () => {
+			const shape = new Shape();
+			expect(shape.standardInch).toBe(metricInch);
 		});
 	});
 });

@@ -35,5 +35,5 @@ export const mixedObj = {
   d: null,
   e: undefined,
   f: { nested: true },
-  g: function inline() {},
+  g: function inline() { return 'testing' },
 };

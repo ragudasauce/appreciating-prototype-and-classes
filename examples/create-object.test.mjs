@@ -85,6 +85,7 @@ describe('Objects in Javascript', () => {
             // functions don't serialize and aren't comparable.
             // so no .toEqual.
             expect(typeof prop).toBe('function');
+            expect(prop()).toBe('testing');
         });
     });
 })

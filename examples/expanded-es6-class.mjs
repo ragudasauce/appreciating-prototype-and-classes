@@ -21,7 +21,7 @@ export class Shape {
     }
 
     get standardInch() {
-        return this.metricInch;
+        return Shape.metricInch;
     }
 }
 

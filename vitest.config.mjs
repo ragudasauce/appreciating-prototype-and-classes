@@ -9,7 +9,10 @@ export default defineConfig({
 		// },
 		coverage: {
 			provider: 'istanbul',
-			include: './examples/*.test.mjs',
+			enabled: true,
+			exclude: ['./examples/main.js', ...coverageConfigDefaults.exclude],
+			thresholds: 100,
+			reporter: ['text', 'json', 'html'],
 		},
 	},
 });
