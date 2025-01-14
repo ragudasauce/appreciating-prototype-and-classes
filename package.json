@@ -1,7 +1,7 @@
 {
-  "name": "prototype-and-classes",
+  "name": "appreciating-prototype-and-classes",
   "version": "1.0.0",
-  "description": "Examples of constructing classes on top of javascript's prototype",
+  "description": "A deeper appreciation of JavaScript's Prototype and Classes.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
