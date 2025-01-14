@@ -1,28 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { Shape, Rectangle, Square } from './expanded-legacy-class.mjs';
+import { Shape, Rectangle, Square } from './simple-prototype-class.mjs';
 
 describe('A Shape', () => {
-	const metricInch = 25.4;
-	describe('the Class should define', () => {
-		describe('static properties', () => {
-			test('for a metricInch', () => {
-				expect(Shape.metricInch).toBe(metricInch);
-			});
-			test('that convert an assumed inch measurment to standard inches', () => {
-				expect(Shape.toMetric(10)).toBe(10 / metricInch);
-			});
-			test('that convert an metric inch measurment to inches', () => {
-				const inches = 22;
-				const metricInches = inches / metricInch;
-				expect(Shape.fromMetric(metricInches)).toBe(inches);
-			});
-		});
-
-		test('public properties', () => {
-			expect(Shape.prototype.move).toBeDefined();
-			expect(Shape.prototype.standardInch).toBeDefined();
-		});
-	});
+    test('Class should not have public properties', () => {
+        expect(Object.keys(Shape).length).toBe(0);
+    });
 
 	describe('Instance', () => {
 		test('should be an instance of the Shape class', () => {
@@ -41,25 +23,6 @@ describe('A Shape', () => {
 			expect(shape.x).toBe(x);
 			expect(shape.y).toBe(y);
 		});
-		test('should change the x and y properties', () => {
-			const shape = new Shape();
-
-			shape.move();
-			expect(shape.x).toBe(0);
-			expect(shape.y).toBe(0);
-
-			shape.move(3);
-			expect(shape.x).toBe(3);
-			expect(shape.y).toBe(0);
-			
-			shape.move(3, 6);
-			expect(shape.x).toBe(6);
-			expect(shape.y).toBe(6);
-		});
-		test('should retrieve the standardInch', () => {
-			const shape = new Shape();
-			expect(shape.standardInch).toBe(metricInch);
-		});
 	});
 });
 
@@ -68,8 +31,6 @@ describe('A Rectangle', () => {
 		describe('public properties', () => {
 			test('should be defined', () => {
 				expect(Rectangle.prototype.area).toBeDefined();
-				expect(Rectangle.prototype.height).toBeDefined();
-				expect(Rectangle.prototype.width).toBeDefined();
 			});
 		});
 	});
@@ -84,16 +45,12 @@ describe('A Rectangle', () => {
 			let width = 0;
 			let height = 0;
 			let rectangle = new Rectangle();
-			expect(rectangle.standardHeight).toBe(height);
-			expect(rectangle.standardWidth).toBe(width);
 			expect(rectangle.height).toBe(height);
 			expect(rectangle.width).toBe(width);
 
 			width = 10;
 			height = 20;
 			rectangle = new Rectangle(0, 0, width, height);
-			expect(rectangle.standardHeight).toBe(height / Shape.metricInch);
-			expect(rectangle.standardWidth).toBe(width / Shape.metricInch);
 			expect(rectangle.height).toBe(height);
 			expect(rectangle.width).toBe(width);
 		});
@@ -109,8 +66,8 @@ describe('A Rectangle', () => {
 
 describe('a Square', () => {
 	describe('the class', () => {
-		test('should have a side', () => {
-			expect(Object.hasOwn(Square.prototype, 'side')).toBe(true);
+		test('should have no public properties', () => {
+			expect(Object.keys(Square).length).toBe(0);
 		});
 		test('should be an intance of a Square, Rectangle, and Shape', () => {
 			const square = new Square();
@@ -121,12 +78,11 @@ describe('a Square', () => {
 	});
 
 	describe('an instance', () => {
-		test('should match a side and a dimension', () => {
+		test('should have a width and a height', () => {
 			const dimension = 10;
 			const square = new Square(0, 0, dimension);
 			expect(square.width).toBe(dimension);
 			expect(square.height).toBe(dimension);
-			expect(square.side).toBe(dimension);
 		})
 	})
 })

@@ -1,3 +1,5 @@
+// examples/inheritable-objects.mjs
+
 // Parent object
 export const shape = {
 	x: 0,
@@ -16,3 +18,6 @@ rectangle.height = 20;
 
 // Child object
 export const square = Object.create(shape);
+
+rectangle.area() // returns 20 * 40 = 800;
+square.area() // returns NaN;

@@ -1,55 +1,54 @@
-// import { shape, rectangle, square } from './inherited-example.mjs';
-// import { mixedObj } from './basic-example.mjs';
-import { Shape as LShape, Rectangle as LRectangle, Square as LSquare } from './legacy-class.mjs';
-import { Shape as EShape, Rectangle as ERectangle, Square as ESquare } from './es6-simple-class.mjs';
-import { Shape, Rectangle, Square } from './es6-expanded-class.mjs';
-// import { constructorObj } from './basic-example.mjs';
+import { shape, rectangle, square } from './inheritable-objects.mjs';
+import { Shape as LShape, Rectangle as LRectangle, Square as LSquare } from './simple-prototype-class.mjs';
+import { Shape as EShape, Rectangle as ERectangle, Square as ESquare } from './simple-es6-class.mjs';
+import { Shape as LXShape, Rectangle as LXRectangle, Square as LXSquare } from './expanded-prototype-class.mjs';
+import { Shape as EXShape, Rectangle as EXRectangle, Square as EXSquare } from './expanded-es6-class.mjs';
 
-// const child = Object.create(constructorObj);
-// child.constructor(3, 4);
-// console.dir(constructorObj);
-// console.dir(child);
+const classFormat = 'color: blue; padding-block-start: 3em; font-size: 1.125em;';
+const instanceFormat = 'color: royalblue; padding-block-start: 1em;';
 
-// console.log(constructorObj.constructor(3, 4));
+console.info('%cExample: Inheritable Objects',  classFormat);
+console.dir(square);
+console.dir(rectangle);
+console.dir(shape);
 
-// console.log('example 1');
-// console.dir(square);
-// console.dir(rectangle);
-// console.dir(shape);
-//
-// console.dir(mixedObj);
-
-console.log('example2, constructor class');
+console.info('%cExample: Simple Prototype Class',  classFormat);
 console.dir(LSquare);
-// console.dir(ESquare);
-console.dir(Square);
-console.log('legacy rectangle');
 console.dir(LRectangle);
-console.log('legacy instances=');
-console.log(new LRectangle());
-// console.dir(ERectangle);
-console.dir(Rectangle);
-// console.dir(LShape);
-// console.dir(EShape);
-console.dir(Shape);
+console.dir(LShape);
 
-console.log('example 2, instances');
-//
-const squareInstance = new Square(0, 0, 15);
-const rectInstance = new Rectangle(0, 0, 20, 40);
-const shapeInstance = new Shape();
-// console.log(new Square());
-console.dir(squareInstance);
-// console.dir(new Rectangle());
-console.dir(rectInstance);
-console.dir(shapeInstance);
-// console.log(shapeInstance.area());
+console.info('%cInstances',  instanceFormat);
+console.dir(new LSquare(2, 4, 10));
+console.dir(new LRectangle(2, 4, 10, 20));
+console.dir(new LShape(2, 4));
 
-// console.dir(Array);
-// console.dir(new Array());
-// //
-// function basic() {}
-//
-// console.dir(basic);
-//
-// console.log(new Object(1));
+console.info('%cExample: simple es6 class',  classFormat);
+console.dir(ESquare);
+console.dir(ERectangle);
+console.dir(EShape);
+
+console.info('%cInstances',  instanceFormat);
+console.dir(new ESquare(2, 4, 10));
+console.dir(new ERectangle(2, 4, 10, 20));
+console.dir(new EShape(2, 4));
+
+console.info('%cExample: expanded prototype class', classFormat);
+console.dir(LXSquare);
+console.dir(LXRectangle);
+console.dir(LXShape);
+
+console.info('%cInstances', instanceFormat);
+console.dir(new LXSquare(2, 4, 10));
+console.dir(new LXRectangle(2, 4, 10, 20));
+console.dir(new LXShape(2, 4));
+
+
+console.info('%cExample: expanded es6 class', classFormat);
+console.dir(EXSquare);
+console.dir(EXRectangle);
+console.dir(EXShape);
+
+console.info('%cInstances', instanceFormat);
+console.dir(new EXSquare(2, 4, 10));
+console.dir(new EXRectangle(2, 4, 10, 20));
+console.dir(new EXShape(2, 4));

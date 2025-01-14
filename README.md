@@ -34,13 +34,21 @@ Until I recently, I didn't fully appreciate what that meant.
 // Create an object literal with a default property
 export const literalObj = { a: 1 };
 
+// Create an object with the `new` keyword with Object (available since 2015)
+export const newObj = new Object(); // returns {}
+export const surprise = new Object(1); // returns Number{1} !!
+
+// Create an object with a function
+export function ObjectConstructor(a = 1) { return { a }}
+export const constructed = new ObjectConstructor(); // returns { a: 1 }
+
 // Create an object by combining two objects
-export const assignObj = Object.assign(literalObj, { b: 5, c: 6 });
+export const assignObj = Object.assign({...literalObj}, { b: 5, c: 6 });
 export const spreadObj = { ...literalObj, b: 5, c: 6 };
 
 // Create and extend a child object from a parent
 export const inheritObj = Object.create(assignObj);
-π
+
 /* Add properties through assignment */
 inheritObj.b = 2;
 
@@ -49,23 +57,16 @@ Object.defineProperty(inheritObj, 'c', {
   value: 3, enumberable: true, writable: true, configurable: true
 });
 
-// Create an object with the `new` keyword with Object (available since 2015)
-export const newObj = new Object(); // returns {}
-export const surprise = new Object(1); // returns Number{1} !!
-
-// Create an object with a constructor function
-export function ObjectConstructor = function(a = 1) { return { a }}
-export const constructed = new ObjectConstructor(); // returns { a: 1 }
 
 // Create an object with multiple data types
-const mixedObj = {
+export const mixedObj = {
   a: 1,
   b: 'two',
   c: true,
   d: null,
   e: undefined,
   f: { nested: true },
-  g: function inline() {},
+  g: function inline() { return 'testing' },
 };
 ```
 
@@ -88,27 +89,30 @@ Until I wanted to create classes dynamically, I never needed to understand the c
 Creating custom objects that inherit properties from a source object is quite easy in Javascript. Any object created with Object.create(sourceObj) is automatically linked to the sourceObj prototype.
 
 ```javascript
+// examples/inheritable-objects.mjs
+
 // Parent object
-const shape = {
- x: 0,
- y: 0,
- area: function() {
-  return this.width * this.height;
- },
+export const shape = {
+	x: 0,
+	y: 0,
+	area: function() {
+		return this.width * this.height;
+	},
 };
 
 // Child object
-const rectangle = Object.create(shape);
+export const rectangle = Object.create(shape);
 rectangle.x = 5;
-rectangle.y = 10
-rectangle.width = 20;
-rectangle.height = 40;
+rectangle.y = 10;
+rectangle.width = 10;
+rectangle.height = 20;
 
 // Child object
-const square = Object.create(shape);
+export const square = Object.create(shape);
 
 rectangle.area() // returns 20 * 40 = 800;
 square.area() // returns NaN;
+
 ```
 
 When we look at the parsed objects they look like classes. The rectangle inherits from shape through the hidden [[ Prototype ]] property and sets values for width, height, x, y without impacting shape or square.
@@ -124,43 +128,46 @@ While JavaScript doesn't have classes like Java or C++, it does have tactics tha
 Let's refactor our shape inheritance example to use JavaScript's default method to create classes: a constructor function that will be called with the new operator to create instances.
 
 ```javascript
+// examples/simple-prototype-class.mjs
+
 // Super Class
 export function Shape(x = 0, y = 0) {
- this.x = x;
- this.y = y;
+	this.x = x;
+	this.y = y;
 }
 
 // Child Class
 export function Rectangle(x = 0, y = 0, width = 0, height = 0) {
- Shape.call(this, x, y); // call super constructor.
- this.width = width;
- this.height = height;
+	Shape.call(this, x, y); // call super constructor.
+	this.width = width;
+	this.height = height;
 }
 
-// While all shapes have area,
-// calculating it is specific to the type of shape.
 Rectangle.prototype.area = function area() {
- return this.width * this.height;
+	return this.width * this.height;
 };
 
 // Extend the Super Class
 Object.setPrototypeOf(Rectangle.prototype, Shape.prototype);
 
-// Subclass Rectangle: every Square is a Rectangle,
-// but not every Rectangle is a square!
+// Subclass of Rectangle
+// every Square is a Rectangle, but not every Rectangle is a square!
 export function Square(x = 0, y = 0, side = 0) {
- Rectangle.call(this, x, y, side, side);
+	Rectangle.call(this, x, y, side, side);
 }
 
 // This was the way to set the prototype before
-// Object.setPrototypeOf existed in the engine (2015)
+// Object.setPrototypeOf existed in the engine
 Square.prototype = Object.create(Rectangle.prototype, {
- constructor: {
-  value: Square,
-  enumerable: false,
-  writable: true,
-  configurable: true,
- },
+	// If you don't set Square.prototype.constructor to Square,
+	// it will take the prototype.constructor of Rectangle (parent).
+	// To avoid that, we set the prototype.constructor to Square (child).
+	constructor: {
+		value: Square,
+		enumerable: false,
+		writable: true,
+		configurable: true,
+	},
 });
 ```
 
@@ -212,33 +219,35 @@ With our data properly scoped and encapsulated, calling area on a Square or Rect
 Since 2015, JavaScript has included the class operator to simplify class definition. Let's refactor our Shape constructor function to use class.
 
 ```javascript
+// examples/simple-es6-class.mjs
+
 // Super Class
 export class Shape {
- constructor(x = 0, y = 0) {
-  this.x = x;
-  this.y = y;
- }
+	constructor(x = 0, y = 0) {
+		this.x = x;
+		this.y = y;
+	}
 }
 
 // Child Class
 export class Rectangle extends Shape {
- constructor(x = 0, y = 0, width = 0, height = 0) {
-  super(x, y);
-  this.width = width;
-  this.height = height;
- }
+	constructor(x = 0, y = 0, width = 0, height = 0) {
+		super(x, y);
+		this.width = width;
+		this.height = height;
+	}
 
- area() {
-  return this.width * this.height;
- }
+	area() {
+		return this.width * this.height;
+	}
 }
 
 // Extended
 // every Square is a Rectangle, but not every Rectangle is a square!
 export class Square extends Rectangle {
- constructor(x = 0, y = 0, side = 0) {
-  super(x, y, side, side);
- }
+	constructor(x = 0, y = 0, side = 0) {
+		super(x, y, side, side);
+	}
 }
 ```
 
@@ -246,7 +255,7 @@ Much like our original refactor this code is a lot easier to read and write. We 
 
 Under the hood, the class operator handles all of that. It is syntactic sugar for a constructor function and does not introduce a new inheritance pattern or paradigm. In terms of functionality  and resources, constructors and classes are equivalent and will yield the same objects with the slight difference of [[ Class ]] being the Prototype instead of [[ Function ]].
 
-## A Closer Look
+### A Closer Look
 
 Let's expand our example to include the all of the class members: getters, setters, methods, and class fields. Let's also include some static and private properties.
 

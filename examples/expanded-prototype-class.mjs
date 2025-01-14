@@ -1,5 +1,6 @@
-// Super Class
+// examples/expanded-prototype-class.mjs
 
+// Super Class
 export function Shape(x = 0, y = 0) {
 	this.x = x;
 	this.y = y;
@@ -37,10 +38,8 @@ Object.defineProperties(Shape.prototype, {
 	},
 });
 
-// Static Shape Properties
 
 // Child Class
-
 export function Rectangle(x = 0, y = 0, width = 0, height = 0) {
 	this.standardWidth;
 	this.standardHeight;
@@ -76,7 +75,7 @@ Object.defineProperties(Rectangle.prototype, {
 
 Object.setPrototypeOf(Rectangle.prototype, Shape.prototype);
 
-// Subclass of Rectangle
+// SubClass of Rectangle
 // every Square is a Rectangle, but not every Rectangle is a square!
 // This case is special, since Square has a private property.
 export let Square;

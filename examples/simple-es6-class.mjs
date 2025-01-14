@@ -1,3 +1,5 @@
+// examples/simple-es6-class.mjs
+
 // Super Class
 export class Shape {
 	constructor(x = 0, y = 0) {

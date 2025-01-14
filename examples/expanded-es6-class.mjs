@@ -1,3 +1,5 @@
+// examples/extended-es6-class.mjs
+
 // Super Class
 export class Shape {
     static metricInch = 25.4;
